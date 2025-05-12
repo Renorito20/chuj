@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ContentPageBase 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MediaSolution.APP.ViewModels"
+    xmlns:views="clr-namespace:MediaSolution.APP.Views"
+    x:DataType="vm:ShowPlaylistViewModel"
+    xmlns:models="clr-namespace:MediaSolution.BL.Models;assembly=MediaSolution.BL"
+    x:Class="MediaSolution.APP.Views.ShowPlaylist.ShowPlaylistView">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+            <Label Text="{Binding PlaylistName}" 
+                   FontSize="24" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center"/>
+            <Label Text="{Binding PlaylistDescription}" 
+                   FontSize="16"
+                   HorizontalOptions="Center"/>
+
+            <Label Text="Media Items" FontSize="18" FontAttributes="Bold" Margin="0,10,0,5" />
+
+            <Grid ColumnDefinitions="*,100,110,Auto,60,70" ColumnSpacing="10" Margin="0,0,0,5">
+                <Label Text="Name" FontAttributes="Bold" Grid.Column="0" />
+                <Label Text="Authors" FontAttributes="Bold" Grid.Column="1" />
+                <Label Text="Genres" FontAttributes="Bold" Grid.Column="2" />
+                <Label Text="Duration" FontAttributes="Bold" Grid.Column="3" />
+                <Label Grid.Column="4" />
+                <Label Grid.Column="5" />
+            </Grid>
+
+            <CollectionView ItemsSource="{Binding MediaItems}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:MediaListModel">
+                        <Frame Margin="0,5" Padding="10" BorderColor="LightGray" HasShadow="True">
+                          
+                            <Grid ColumnDefinitions="*,120,120,Auto,Auto,Auto" ColumnSpacing="10">
+                                <Label Text="{Binding Name}" Grid.Column="0" VerticalOptions="Center" />
+                                <Label Text="{Binding Authors}" Grid.Column="1" VerticalOptions="Center" />
+                                <Label Text="{Binding Genres}" Grid.Column="2" VerticalOptions="Center" />
+                                <Label Text="{Binding Duration, StringFormat='{0:mm\\:ss}'}" Grid.Column="3" VerticalOptions="Center" />
+                                <Button Grid.Column="4" 
+                                        Text="View" 
+                                        Clicked="OnViewButtonClicked"
+                                        BackgroundColor="#2196F3"
+                                        TextColor="White"
+                                        Padding="10,0"
+                                        CommandParameter="{Binding .}"/>
+                                <Button Grid.Column="5" 
+                                        Text="Delete"
+                                        Clicked="OnDeleteButtonClicked"
+                                        BackgroundColor="#a82525"
+                                        TextColor="White"
+                                        Padding="10,0"
+                                        CommandParameter="{Binding .}"/>
+                                        
+                                        
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                        <Label Text="No media items in this playlist" FontSize="16" TextColor="Gray" />
+                    </StackLayout>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</views:ContentPageBase>

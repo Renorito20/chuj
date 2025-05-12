@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ContentPageBase 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MediaSolution.APP.ViewModels"
+    xmlns:views="clr-namespace:MediaSolution.APP.Views"
+    x:DataType="vm:AddMediaViewModel"
+    xmlns:models="clr-namespace:MediaSolution.BL.Models;assembly=MediaSolution.BL"
+    x:Class="MediaSolution.APP.Views.Playlist.AddMediaView">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Entry Placeholder="Name" Text="{Binding Name}" />
+            <Entry Placeholder="Authors" Text="{Binding Authors}" />
+            <Entry Placeholder="Genres" Text="{Binding Genres}" />
+            <Entry Placeholder="Duration (minutes)" Keyboard="Numeric" Text="{Binding Duration}" />
+            <Entry Placeholder="Size (in bytes)" Keyboard="Numeric" Text="{Binding SizeInBytes}" />
+            <Entry Placeholder="Path" Text="{Binding Path}" />
+
+            <Button Text="Save" Command="{Binding SaveCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</views:ContentPageBase>

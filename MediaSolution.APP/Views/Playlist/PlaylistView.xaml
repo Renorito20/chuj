@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ContentPageBase 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MediaSolution.APP.ViewModels"
+    xmlns:views="clr-namespace:MediaSolution.APP.Views"
+    x:DataType="vm:PlaylistViewModel"
+    xmlns:models="clr-namespace:MediaSolution.BL.Models;assembly=MediaSolution.BL"
+    x:Class="MediaSolution.APP.Views.Playlist.PlaylistView">
+
+    <ScrollView>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <!-- Side panel -->
+                <ColumnDefinition Width="*"/>
+                <!-- Main content -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Side Panel -->
+            <Grid Grid.Column="0" WidthRequest="200" BackgroundColor="#232539">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Frame Grid.Row="0" 
+                       CornerRadius="20" 
+                       HeightRequest="100"
+                       WidthRequest="100"
+                       Padding="0"
+                       Margin="10"
+                       HorizontalOptions="Center">
+                    <Image Source="logo.png" Aspect="AspectFit"/>
+                </Frame>
+
+                <StackLayout Grid.Row="1" Spacing="10" Margin="10">
+                    <Button Text="Create Playlist" BackgroundColor="#9D7AEE" Clicked="OnClickCreatePlaylist"/>
+                    <Button Text="Add Media" BackgroundColor="#6E69F4" Clicked="OnClickAddMedia"/>
+                    <Button Text="View Media"
+                            BackgroundColor="LavenderBlush"                                                      
+                            Clicked="OnClickViewMedia" />
+                </StackLayout>
+
+                <VerticalStackLayout Grid.Row="2" Margin="10,20,10,5" Spacing="10">
+                    <Label Text="Filters" FontSize="16" FontAttributes="Bold"/>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Author" FontSize="14"/>
+                        <Picker x:Name="AuthorPicker" 
+                                Title="Select Author" 
+                                BackgroundColor="#4a4a4a"
+                                TextColor="White"
+                                ItemsSource="{Binding Authors}"
+                                SelectedItem="{Binding SelectedAuthor}"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Genre" FontSize="14"/>
+                        <Picker x:Name="GenrePicker" 
+                                Title="Select Genre" 
+                                BackgroundColor="#4a4a4a"
+                                TextColor="White"
+                                ItemsSource="{Binding Genres}"
+                                SelectedItem="{Binding SelectedGenre}"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Length (minutes)" FontSize="14"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Entry Grid.Column="0" 
+                                   Placeholder="Min" 
+                                   Keyboard="Numeric" 
+                                   BackgroundColor="#4a4a4a"
+                                   TextColor="White"
+                                   Text="{Binding LengthMin, Mode=TwoWay, StringFormat='{0:D}', TargetNullValue='0'}"/>
+                            <Label Grid.Column="1" Text="-" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Entry Grid.Column="2" 
+                                   Placeholder="Max" 
+                                   Keyboard="Numeric" 
+                                   BackgroundColor="#4a4a4a"
+                                   TextColor="White"
+                                   Text="{Binding LengthMax, Mode=TwoWay, StringFormat='{0:D}', TargetNullValue='99999'}"/>
+                        </Grid>
+                    </VerticalStackLayout>
+
+                    <Button Text="Apply Filters" 
+                            BackgroundColor="DodgerBlue" 
+                            TextColor="White"
+                            Margin="0,10,0,0"
+                            Clicked="OnApplyFiltersClicked"/>
+                    <Button Text="Clear Filters" 
+                            BackgroundColor="#FF5252" 
+                            TextColor="White"
+                            Margin="0,5,0,0"
+                            Clicked="OnClearFiltersClicked"/>
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Right Content Area -->
+            <Grid Grid.Column="1" Padding="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!-- First content div -->
+                <Frame Grid.Row="0" 
+                       BackgroundColor="#232539" 
+                       CornerRadius="10" 
+                       Margin="0,0,0,10"
+                       Padding="0"
+                       HasShadow="False">
+                    <Grid ColumnSpacing="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <!-- Search Entry -->
+                            <Entry Grid.Column="0" 
+                                   Placeholder="Search"
+                                   PlaceholderColor="LightGray"
+                                   TextColor="White"
+                                   Keyboard="Text"
+                                   BackgroundColor="Transparent"
+                                   VerticalOptions="Center"
+                                   Margin="10,0"
+                                   Text="{Binding SearchText, Mode=TwoWay}"
+                                   TextChanged="OnTextChanged"/>
+                            <!-- Search Button -->
+                            <ImageButton Grid.Column="1"
+                                         Source="search.png"
+                                         BackgroundColor="Transparent"
+                                         WidthRequest="40"
+                                         HeightRequest="40"
+                                         CornerRadius="0"
+                                         Padding="10"
+                                         Clicked="OnSearchClicked" />
+                        </Grid>
+                </Frame>
+                <!-- Second content div -->
+                <Frame Grid.Row="1" BackgroundColor="#232539" CornerRadius="10" Margin="0,0,0,10">
+                    <CollectionView ItemsSource="{Binding FilteredPlaylists}">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical"
+                                             Span="3" 
+                                             VerticalItemSpacing="15"
+                                             HorizontalItemSpacing="15"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:PlaylistListModel">
+                                <Frame BackgroundColor="#2a2a2a" 
+                                       Margin="5" 
+                                       Padding="10" 
+                                       CornerRadius="5">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnPlaylistTapped" />
+                                    </Frame.GestureRecognizers>
+                                    <Grid>
+                                        <VerticalStackLayout HorizontalOptions="Center">
+                                            <Frame HeightRequest="60" WidthRequest="60" CornerRadius="30" Padding="0" HorizontalOptions="Center">
+                                                <Image Source="{Binding CoverImage}" Aspect="AspectFill"/>
+                                            </Frame>
+                                            <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="White" FontSize="14" HorizontalOptions="Center" Margin="0,5,0,0"/>
+                                            <Label Text="{Binding Description}" TextColor="White" FontSize="12" HorizontalOptions="Center" Margin="0,5,0,30"/>
+                                        </VerticalStackLayout>
+
+                                        <Button 
+                                            ImageSource="trash.png"
+                                            BackgroundColor="Transparent"
+                                            WidthRequest="24"
+                                            HeightRequest="24"
+                                            Clicked="OnDeletePlaylistClicked"
+                                            HorizontalOptions="End"
+                                            VerticalOptions="Start"
+                                            Margin="0,0,0,0"
+                                            CommandParameter="{Binding .}" />
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Frame>
+            </Grid>
+        </Grid>
+    </ScrollView>
+</views:ContentPageBase>

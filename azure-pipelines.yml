@@ -1,0 +1,31 @@
+trigger:
+  branches:
+    include:
+      - main  # Runs the pipeline when changes are pushed to main
+
+pool:
+  vmImage: 'ubuntu-latest'  # Use latest Windows image (or change to 'ubuntu-latest' if using Linux)
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Install .NET 8 SDK'
+  inputs:
+    packageType: 'sdk'
+    version: '8.0.x'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- script: |
+    dotnet restore MediaSolution.sln
+    dotnet build MediaSolution.sln --configuration Release
+  displayName: 'Restore and Build'
+
+- script: |
+    dotnet test MediaSolution.DAL.Tests/MediaSolution.DAL.Tests.csproj --configuration Release --no-build --logger trx
+    dotnet test MediaSolution.BL.Tests/MediaSolution.BL.Tests.csproj --configuration Release --no-build --logger trx
+  displayName: 'Run Tests'
+
+- task: PublishTestResults@2
+  displayName: 'Publish Test Results'
+  inputs:
+    testResultsFiles: '**/*.trx'
+    testRunTitle: 'xUnit Test Results'

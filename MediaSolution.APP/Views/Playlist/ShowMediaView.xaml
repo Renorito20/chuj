@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ContentPageBase 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MediaSolution.APP.ViewModels"
+    xmlns:views="clr-namespace:MediaSolution.APP.Views"
+    xmlns:models="clr-namespace:MediaSolution.BL.Models;assembly=MediaSolution.BL"
+    x:DataType="vm:ShowMediaViewModel"
+    x:Class="MediaSolution.APP.Views.ShowMedia.ShowMediaView"
+    Title="Media Details"
+    Padding="20">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20">
+            <!-- Header Section -->
+            <Label Text="{Binding CurrentMedia.Name}" 
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Primary}"
+                   HorizontalOptions="Center"
+                   Margin="0,10"/>
+
+            <!-- Details Card -->
+            <Frame CornerRadius="15"
+                   Padding="20"
+                   BackgroundColor="{StaticResource DarkSecondaryBackground}"
+                   BorderColor="{StaticResource Primary}"
+                   HasShadow="True">
+
+                <VerticalStackLayout Spacing="15">
+                    <!-- Authors -->
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Authors:" 
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextSecondary}"/>
+                        <Label Text="{Binding CurrentMedia.Authors}" 
+                               FontSize="16"
+                               TextColor="{StaticResource TextPrimary}"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Genres -->
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Genres:" 
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextSecondary}"/>
+                        <Label Text="{Binding CurrentMedia.Genres}" 
+                               FontSize="16"
+                               TextColor="{StaticResource TextPrimary}"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Duration -->
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Duration:" 
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextSecondary}"/>
+                        <Label Text="{Binding CurrentMedia.Duration}" 
+                               FontSize="16"
+                               TextColor="{StaticResource TextPrimary}"/>
+                        
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</views:ContentPageBase>
